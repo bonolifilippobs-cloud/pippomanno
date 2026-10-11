@@ -1,0 +1,10 @@
+{
+  "name": "Pippo Tracker",
+  "short_name": "Tracker",
+  "description": "Talk to Claude to log meals, workouts, water and weight.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f5f2",
+  "theme_color": "#d97757",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

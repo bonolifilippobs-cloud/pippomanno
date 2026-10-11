@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+  <title>Pippo Tracker</title>
+  <meta name="description" content="Talk to Claude to log meals, workouts, water and weight." />
+  <meta name="theme-color" content="#f6f5f2" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Tracker" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <button class="icon-btn" id="prevDay" aria-label="Previous day">‹</button>
+    <button class="date-label" id="dateLabel">Today</button>
+    <button class="icon-btn" id="nextDay" aria-label="Next day">›</button>
+    <button class="icon-btn settings" id="openSettings" aria-label="Settings">⚙︎</button>
+  </header>
+
+  <main id="main">
+    <section class="card hero" aria-label="Calories">
+      <div class="ring-wrap">
+        <svg viewBox="0 0 120 120" class="ring" aria-hidden="true">
+          <circle cx="60" cy="60" r="52" class="ring-track" />
+          <circle cx="60" cy="60" r="52" class="ring-fill" id="ringFill" />
+        </svg>
+        <div class="ring-center">
+          <div class="hero-num" id="kcalLeft">–</div>
+          <div class="muted" id="kcalLeftLabel">kcal left</div>
+        </div>
+      </div>
+      <dl class="hero-stats">
+        <div><dt>Eaten</dt><dd id="kcalIn">–</dd></div>
+        <div><dt>Burned</dt><dd id="kcalOut">–</dd></div>
+        <div><dt>Goal</dt><dd id="kcalGoal">–</dd></div>
+      </dl>
+    </section>
+
+    <section class="card" aria-label="Macros">
+      <h2>Macros</h2>
+      <div id="macros" class="bars"></div>
+    </section>
+
+    <section class="card grid-2">
+      <div>
+        <h2>Water</h2>
+        <div class="stat"><span id="water">–</span><span class="muted" id="waterGoal"></span></div>
+        <div class="meter"><div class="meter-fill water" id="waterBar"></div></div>
+      </div>
+      <div>
+        <h2>Exercise</h2>
+        <div class="stat"><span id="exMin">–</span><span class="muted"> min</span></div>
+        <div class="muted small" id="weightToday"></div>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Log">
+      <h2>Today's log</h2>
+      <div id="log"></div>
+    </section>
+
+    <section class="card" aria-label="Calories, last 14 days">
+      <h2>Calories · last 14 days</h2>
+      <div class="chart" id="calChart"></div>
+    </section>
+
+    <section class="card" aria-label="Weight trend">
+      <h2>Weight · last 60 days</h2>
+      <div class="chart" id="weightChart"></div>
+    </section>
+
+    <section class="card" aria-label="Conversation">
+      <h2>Conversation</h2>
+      <div id="chat" class="chat"></div>
+    </section>
+  </main>
+
+  <form class="composer" id="composer" autocomplete="off">
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+    <div class="photo-preview" id="photoPreview" hidden>
+      <img id="photoImg" alt="Meal photo to send" />
+      <button type="button" class="icon-btn" id="clearPhoto" aria-label="Remove photo">✕</button>
+    </div>
+    <div class="composer-row">
+      <label class="icon-btn" aria-label="Add meal photo">
+        📷<input type="file" accept="image/*" id="photoInput" hidden />
+      </label>
+      <textarea id="input" rows="1" placeholder="What did you eat or do?" enterkeyhint="send"></textarea>
+      <button type="button" class="mic" id="mic" aria-label="Speak">🎙</button>
+      <button type="submit" class="send" id="send" aria-label="Send">↑</button>
+    </div>
+  </form>
+
+  <dialog id="settings">
+    <form method="dialog" id="settingsForm">
+      <h2>Settings</h2>
+      <label>Access token<input type="password" name="token" autocomplete="off" /></label>
+      <fieldset>
+        <legend>Daily goals</legend>
+        <label>Calories<input type="number" name="calories" inputmode="numeric" /></label>
+        <label>Protein (g)<input type="number" name="protein_g" inputmode="numeric" /></label>
+        <label>Carbs (g)<input type="number" name="carbs_g" inputmode="numeric" /></label>
+        <label>Fat (g)<input type="number" name="fat_g" inputmode="numeric" /></label>
+        <label>Water (ml)<input type="number" name="water_ml" inputmode="numeric" /></label>
+        <label>Target weight (kg)<input type="number" step="0.1" name="target_weight_kg" inputmode="decimal" /></label>
+      </fieldset>
+      <p class="muted small">Tip: you can also just say “set my goal to 2000 calories and 150 g protein”.</p>
+      <div class="dialog-actions">
+        <button value="cancel" formnovalidate>Cancel</button>
+        <button value="save" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="tooltip" id="tooltip" hidden></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
